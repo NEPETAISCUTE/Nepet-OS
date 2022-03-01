@@ -56,6 +56,9 @@ struct __attribute__((__packed__))  IDTRDescriptor {
 
 extern void ISRfunc();
 extern void GeneralProtectionFault();
+
+void nullifyGate(uint8_t gateOffset);
+void setGate(uint8_t gateOffset, uint8_t attributes, void* codeInterrupt);
 void set_idt();
 
 #endif
