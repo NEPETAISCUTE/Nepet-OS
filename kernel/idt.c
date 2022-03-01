@@ -17,7 +17,7 @@ void set_idt()
     }
 
     IDTdescriptor[GENERAL_PROTECTION_FAULT].zero = 0;
-    IDTdescriptor[GENERAL_PROTECTION_FAULT].selector = 0x32<<3|SELECTOR_GDT_TABLE|0;
+    IDTdescriptor[GENERAL_PROTECTION_FAULT].selector = 0x28;
     IDTdescriptor[GENERAL_PROTECTION_FAULT].ist = 0;
     IDTdescriptor[GENERAL_PROTECTION_FAULT].type_attributes = 1<<7|GATE_TRAP;
     IDTdescriptor[GENERAL_PROTECTION_FAULT].offset_1 =  (uint64_t)GeneralProtectionFault&0x000000000000FFFF;
@@ -33,7 +33,7 @@ void set_idt()
     IDTdescriptor[ISR].offset_3 =  ((uint64_t)ISRfunc&0xFFFFFFFF00000000)>>32;
 
     struct IDTRDescriptor descriptor;
-    descriptor.size = 33*128-1;
+    descriptor.size = sizeof(IDTdescriptor)-1;
     descriptor.offset = IDTdescriptor;
     struct IDTRDescriptor* descriptor_ptr = &descriptor;
 
