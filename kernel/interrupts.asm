@@ -1,8 +1,10 @@
 bits 64
-extern ISRfunc
+
 extern GeneralProtectionFault
-ISRfunc:
-    iretq
+extern ISRfunc
 
 GeneralProtectionFault:
     jmp $
+
+ISRfunc:
+    iretq

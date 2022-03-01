@@ -1,4 +1,4 @@
-#include "idt.h"
+#include <idt.h>
 
 struct InterruptDescriptor64 IDTdescriptor[33];
 //sets the IDT table and then loads it in the IDTR
@@ -11,14 +11,14 @@ void set_idt()
     }
 
     setGate(GENERAL_PROTECTION_FAULT, GATE_TRAP, GeneralProtectionFault);
-
     setGate(ISR, GATE_ISR, ISRfunc);
 
     struct IDTRDescriptor descriptor;
     descriptor.size = sizeof(IDTdescriptor)-1;
     descriptor.offset = IDTdescriptor;
 
-    asm volatile("lidt %0\n"
+    asm volatile(
+        "lidt %0\n"
         "sti\n"
         :
         : "m" (descriptor));

@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stivale2.h>
+#include <idt.h>
 
 // We need to tell the stivale bootloader where we want our stack to be.
 // We are going to allocate our stack as an array in .bss.
@@ -121,11 +122,11 @@ void _start(struct stivale2_struct *stivale2_struct) {
 
     // We should now be able to call the above function pointer to print out
     // a simple "Hello World" to screen.
-    term_write("Welcome!\n",9);
+    term_write("loading IDT...\n",15);
     set_idt();
-    term_write("IDT was set, let's test it now :33\n", 35);
+    term_write("testing IDT...\n", 15);
     asm("int $0x20");
-    term_write("it works!!!\n",12);
+    term_write("\x1b[1;30mr\x1b[1;31ma\x1b[1;32mi\x1b[1;33mn\x1b[1;34mb\x1b[1;35mo\x1b[1;36mw",56);
 
     // We're done, just hang...
     for (;;) {
