@@ -48,8 +48,7 @@ override INTERNALLDFLAGS :=    \
 # Use find to glob all *.c files in the directory and extract the object names.
 override CFILES := $(shell find ./ -type f -name '*.c')
 override ASMFILES := $(shell find ./ -type f -name '*.asm')
-override OBJC := $(CFILES:.c=.o)
-override OBJASM := $(ASMFILES:.asm=.o)
+override OBJ := $(CFILES:.c=.o) $(ASMFILES:.asm=.o)
 override HEADER_DEPS := $(CFILES:.c=.d)
 
 # Default target.
@@ -60,8 +59,8 @@ stivale2.h:
 	curl https://raw.githubusercontent.com/stivale/stivale/master/stivale2.h -o $@
 
 # Link rules for the final kernel executable.
-$(KERNEL): $(OBJC) $(OBJASM)
-	$(LD) $(OBJC) $(OBJASM) $(LDFLAGS) $(INTERNALLDFLAGS) -o $@
+$(KERNEL): $(OBJ)
+	$(LD) $(OBJ) $(LDFLAGS) $(INTERNALLDFLAGS) -o $@
 
 # Compilation rules for *.c files.
 -include $(HEADER_DEPS)
@@ -74,7 +73,7 @@ $(KERNEL): $(OBJC) $(OBJASM)
 # Remove object files and the final executable.
 .PHONY: clean
 clean:
-	rm -rf $(KERNEL) $(OBJC) $(OBJASM) $(HEADER_DEPS)
+	rm -rf $(KERNEL) $(OBJ) $(HEADER_DEPS)
 
 .PHONY: distclean
 distclean: clean

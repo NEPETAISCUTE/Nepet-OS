@@ -1,5 +1,7 @@
 bits 64
-ISRFunc:
+extern ISRfunc
+extern GeneralProtectionFault
+ISRfunc:
     iretq
 
 GeneralProtectionFault:
