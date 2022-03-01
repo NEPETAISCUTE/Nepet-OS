@@ -1,9 +1,9 @@
 #include "idt.h"
 
+struct InterruptDescriptor64 IDTdescriptor[33];
 //sets the IDT table and then loads it in the IDTR
 void set_idt()
 {
-    struct InterruptDescriptor64 IDTdescriptor[33];
 
     for(int i = 0; i < 33; i++)
     {
@@ -25,7 +25,7 @@ void set_idt()
     IDTdescriptor[GENERAL_PROTECTION_FAULT].offset_3 =  ((uint64_t)GeneralProtectionFault&0xFFFFFFFF00000000)>>32;
 
     IDTdescriptor[ISR].zero = 0;
-    IDTdescriptor[ISR].selector = 0x32<<3|SELECTOR_GDT_TABLE|0;
+    IDTdescriptor[ISR].selector = 0x28;
     IDTdescriptor[ISR].ist = 0;
     IDTdescriptor[ISR].type_attributes = 1<<7|GATE_ISR;
     IDTdescriptor[ISR].offset_1 =  (uint64_t)ISRfunc&0x000000000000FFFF;
