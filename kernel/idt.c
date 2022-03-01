@@ -35,10 +35,9 @@ void set_idt()
     struct IDTRDescriptor descriptor;
     descriptor.size = sizeof(IDTdescriptor)-1;
     descriptor.offset = IDTdescriptor;
-    struct IDTRDescriptor* descriptor_ptr = &descriptor;
 
     asm volatile("lidt %0\n"
         "sti\n"
         :
-        : "m" (descriptor_ptr));
+        : "m" (descriptor));
 }
