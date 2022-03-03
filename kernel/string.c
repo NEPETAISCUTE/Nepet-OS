@@ -15,7 +15,7 @@ void itoa(char* s, int num)
         temp/=10;
         cntLen++;
     }
-    for(uint i = 0; i < cntLen; i++)
+    for(unsigned int i = 0; i < cntLen; i++)
     {
         s[cntLen-i-1] = '0'+num%10;
         num /= 10;
@@ -26,15 +26,15 @@ void itoa(char* s, int num)
 int atoi(char* s)
 {
     int val = 0;
-    uint length = strlen(s);
-    ubyte neg = 0;
+    size_t length = strlen(s);
+    unsigned char neg = 0;
     if(s[0]=='-')
     {
         neg = 1;
         s++;
         length--;
     }
-    for(uint i = 0; i < length; i++)
+    for(unsigned int i = 0; i < length; i++)
     {
         val *= 10;
         val += (s[i]-'0');
@@ -44,9 +44,9 @@ int atoi(char* s)
     return val;
 }
 
-uint strlen(char* s)
+size_t strlen(char* s)
 {
-    uint length = 0;
+    size_t length = 0;
     while(*(s+length))
         length++;
     return length;

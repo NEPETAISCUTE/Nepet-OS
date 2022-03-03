@@ -6,6 +6,6 @@
 
 void itoa(char* s, int n);
 int atoi(char* s);
-uint strlen(char* s);
+size_t strlen(char* s);
 
 #endif
