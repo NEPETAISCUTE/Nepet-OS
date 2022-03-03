@@ -54,6 +54,7 @@ struct __attribute__((__packed__))  IDTRDescriptor {
     struct InterruptDescriptor64* offset;
 };
 
+extern void* term_write_ptr;
 extern void ISRfunc();
 extern void GeneralProtectionFault();
 

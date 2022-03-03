@@ -98,6 +98,8 @@ void *stivale2_get_tag(struct stivale2_struct *stivale2_struct, uint64_t id) {
     }
 }
 
+void* term_write_ptr;
+
 // The following will be our kernel's entry point.
 void _start(struct stivale2_struct *stivale2_struct) {
     // Let's get the terminal structure tag from the bootloader.
@@ -122,11 +124,15 @@ void _start(struct stivale2_struct *stivale2_struct) {
 
     // We should now be able to call the above function pointer to print out
     // a simple "Hello World" to screen.
-    term_write("loading IDT...\n",15);
+    term_write("loading IDT...\n", 15);
     set_idt();
     term_write("testing IDT...\n", 15);
     asm("int $0x20");
-    term_write("\x1b[1;30mr\x1b[1;31ma\x1b[1;32mi\x1b[1;33mn\x1b[1;34mb\x1b[1;35mo\x1b[1;36mw",56);
+    term_write("IDT functional!\n", 16);
+    term_write("\x1b[1;30mr\x1b[1;31ma\x1b[1;32mi\x1b[1;33mn\x1b[1;34mb\x1b[1;35mo\x1b[1;36mw\n",57);
+    term_write("now i gotta test GPF\n",21);
+    asm("int $0x1");
+    term_write("oh it didn't trigger\n", 21);
 
     // We're done, just hang...
     for (;;) {
