@@ -4,16 +4,13 @@ struct InterruptDescriptor64 IDTdescriptor[33];
 //sets the IDT table and then loads it in the IDTR
 void set_idt()
 {
-    void (*term_write)(char* string, size_t len) = term_write_ptr;
-    term_write("testing if the idt setup thingy knows what term_write is\n", 57);
-    
     for(int i = 0; i < 33; i++)
     {
         nullifyGate(i);
     }
 
-    setGate(GENERAL_PROTECTION_FAULT, GATE_TRAP, GeneralProtectionFault);
-    setGate(ISR, GATE_ISR, ISRfunc);
+    setGate(GENERAL_PROTECTION_FAULT, GATE_TRAP, GeneralProtectionFault_asm);
+    setGate(ISR, GATE_ISR, ISRfunc_asm);
 
     struct IDTRDescriptor descriptor;
     descriptor.size = sizeof(IDTdescriptor)-1;
@@ -24,10 +21,13 @@ void set_idt()
         "sti\n"
         :
         : "m" (descriptor));
+
+    term_write_int = term_write;
 }
 
 void nullifyGate(uint8_t gateOffset)
 {
+
     IDTdescriptor[gateOffset].zero = 0;
     IDTdescriptor[gateOffset].selector = 0;
     IDTdescriptor[gateOffset].ist = 0;

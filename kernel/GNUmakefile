@@ -16,7 +16,7 @@ LD := ld
 endif
 
 # User controllable CFLAGS.
-CFLAGS ?= -Wall -Wextra -O2 -pipe
+CFLAGS ?= -Wall -Wextra -O0 -pipe -fno-inline-functions
 
 # User controllable linker flags. We set none by default.
 LDFLAGS ?=
@@ -36,6 +36,7 @@ override INTERNALCFLAGS :=   \
 	-mno-sse2            \
 	-mno-red-zone        \
 	-mcmodel=kernel      \
+	-mgeneral-regs-only  \
 	-MMD
 
 # Internal linker flags that should not be changed by the user.
@@ -65,10 +66,10 @@ $(KERNEL): $(OBJ)
 # Compilation rules for *.c files.
 -include $(HEADER_DEPS)
 %.o: %.c stivale2.h
-	$(CC) $(CFLAGS) $(INTERNALCFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(INTERNALCFLAGS) -c $< -o $@ -g
 
 %.o: %.asm
-	nasm $< -f elf64 -o $@ 
+	nasm $< -f elf64 -o $@ -g
 
 # Remove object files and the final executable.
 .PHONY: clean

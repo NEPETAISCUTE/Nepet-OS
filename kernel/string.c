@@ -1,20 +1,36 @@
 #include "string.h"
 
+#ifdef S_DEBUG
+#include <stdio.h>
+int main()
+{
+    char string[20];
+    itoa(string,-38462);
+    printf("%d\n",strlen(string));
+    printf("%s\n",string);
+}
+#endif
+
 void itoa(char* s, int num)
 {
+    //just takes care of negative numbers
     if(num<0)
     {
-        *s='-';
+        *s = '-';
         s++;
-        num*=-1;
+        num *= -1;
     }
+
+    //get the length of the future string into cntLen
     int temp = num;
-    int cntLen = 0;
+    unsigned int cntLen = 0;
     while(temp>1)
     {
-        temp/=10;
+        temp /= 10;
         cntLen++;
     }
+
+    //proceed to write the text into the string
     for(unsigned int i = 0; i < cntLen; i++)
     {
         s[cntLen-i-1] = '0'+num%10;

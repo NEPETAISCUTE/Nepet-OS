@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stivale2.h>
+#include <string.h>
 
 #define IST_STACK_UNUSED 0
 
@@ -40,7 +41,7 @@ enum interrupts {
     ISR = 0x20,
 };
 
-struct __attribute__((__packed__)) InterruptDescriptor64{
+struct  InterruptDescriptor64{
    uint16_t offset_1;        // offset bits 0..15
    uint16_t selector;        // a code segment selector in GDT or LDT
    uint8_t  ist;             // bits 0..2 holds Interrupt Stack Table offset, rest of bits zero.
@@ -48,15 +49,17 @@ struct __attribute__((__packed__)) InterruptDescriptor64{
    uint16_t offset_2;        // offset bits 16..31
    uint32_t offset_3;        // offset bits 32..63
    uint32_t zero;            // reserved
-};
-struct __attribute__((__packed__))  IDTRDescriptor {
+}__attribute__((__packed__)); ;
+
+struct  IDTRDescriptor {
     uint16_t size;
     struct InterruptDescriptor64* offset;
-};
+}__attribute__((__packed__)); ;
 
-extern void* term_write_ptr;
-extern void ISRfunc();
-extern void GeneralProtectionFault();
+extern void (*term_write)(const char *string, size_t length);
+extern void (*term_write_int)(const char*string, size_t length);
+extern void ISRfunc_asm();
+extern void GeneralProtectionFault_asm();
 
 void nullifyGate(uint8_t gateOffset);
 void setGate(uint8_t gateOffset, uint8_t attributes, void* codeInterrupt);
