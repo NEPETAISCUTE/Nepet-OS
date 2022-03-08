@@ -98,7 +98,6 @@ void *stivale2_get_tag(struct stivale2_struct *stivale2_struct, uint64_t id) {
     }
 }
 
-void* term_write_ptr = NULL;
 void (*term_write)(const char *string, size_t length);
 // The following will be our kernel's entry point.
 void _start(struct stivale2_struct *stivale2_struct) {
@@ -115,22 +114,23 @@ void _start(struct stivale2_struct *stivale2_struct) {
     }
 
     // Let's get the address of the terminal write function.
-    void *term_write_ptr = (void *)term_str_tag->term_write;
 
     // Now, let's assign this pointer to a function pointer which
     // matches the prototype described in the stivale2 specification for
     // the stivale2_term_write function.
-    void (*term_write)(const char *string, size_t length) = term_write_ptr;
+    term_write = (void *)term_str_tag->term_write;
 
     // We should now be able to call the above function pointer to print out
     // a simple "Hello World" to screen.
     term_write("\x1b[1;30mr\x1b[1;31ma\x1b[1;32mi\x1b[1;33mn\x1b[1;34mb\x1b[1;35mo\x1b[1;36mw\n",57);
+    setColor(WHITE,BLACK);
     term_write("loading IDT...\n", 15);
     set_idt();
-    term_write("testing IDT...\n", 15);
+    term_write("IDT successfully loaded!\n", 25);
+
     asm("int $0x20");
-    term_write("IDT functional!\n", 16);
-    asm("int $13");
+    
+    scrollDown(10);
     term_write("end!\n",5);
 
     // We're done, just hang...

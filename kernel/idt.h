@@ -5,6 +5,7 @@
 #include <stddef.h>
 #include <stivale2.h>
 #include <string.h>
+#include <video.h>
 
 #define IST_STACK_UNUSED 0
 
@@ -57,9 +58,31 @@ struct  IDTRDescriptor {
 }__attribute__((__packed__)); ;
 
 extern void (*term_write)(const char *string, size_t length);
-extern void (*term_write_int)(const char*string, size_t length);
-extern void ISRfunc_asm();
-extern void GeneralProtectionFault_asm();
+
+extern void divByZErr_asm(); //INT 0x0
+extern void dbg_asm(); //INT 0x1
+extern void NMI_asm(); //INT 0x2
+extern void bkpt_asm(); //INT 0x3
+extern void overflow_asm(); //INT 0x4
+extern void boundRangeExceeded_asm(); //INT 0x5
+extern void invalidOPCode_asm(); //INT 0x6
+extern void deviceNotAvailable_asm(); //INT 0x7
+extern void doubleFault_asm(); //INT 0x8
+extern void invalidTSS_asm(); //INT 0xA
+extern void segmentNotPresent_asm(); //INT 0xb
+extern void stackSegmentFault_asm(); //INT 0xc
+extern void GeneralProtectionFault_asm(); //INT 0xd
+extern void pageFault_asm(); //INT 0xe
+extern void x87FloatingPoint_asm(); //INT 0x10
+extern void alignmentCheck_asm(); //INT 0x11
+extern void machineCheck_asm(); //INT 0x12
+extern void SIMDFloatingPoint_asm(); //INT 0x13
+extern void virtualizationException_asm(); //INT 0x14
+extern void controlProtection_asm(); //INT 0x15
+extern void hypervisorInjection_asm(); //INT 0x1c
+extern void VMMCommunication_asm(); //INT 0x1d
+extern void securityException_asm(); //INT 0x1e
+extern void ISRfunc_asm(); //INT 0x20
 
 void nullifyGate(uint8_t gateOffset);
 void setGate(uint8_t gateOffset, uint8_t attributes, void* codeInterrupt);

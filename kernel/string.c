@@ -5,11 +5,42 @@
 int main()
 {
     char string[20];
-    itoa(string,-38462);
+    itohex(string, 0x7e538);
     printf("%d\n",strlen(string));
     printf("%s\n",string);
 }
 #endif
+
+void concat(char* s, const char* sadd)
+{
+    size_t ssize = strlen(s);
+
+    strcpy(&s[ssize], sadd, strlen(sadd));
+    s[ssize+strlen(sadd)] = '\0';
+}
+
+void itohex(char* s, uint64_t num)
+{
+    uint64_t temp = num;
+    unsigned int cntLen = 0;
+    while(temp>=1)
+    {
+        temp /= 16;
+        cntLen++;
+    }
+    if(cntLen==0)
+        cntLen = 1;
+
+    for(unsigned int i = 0; i < cntLen; i++)
+    {
+        if(num%16<10)
+            s[cntLen-i-1] = '0'+num%16;
+        else
+            s[cntLen-i-1] = 'A'+num%16-10;
+        num /= 16;
+    }
+    s[cntLen] = '\0';
+}
 
 void itoa(char* s, int num)
 {
@@ -58,6 +89,16 @@ int atoi(char* s)
     if(neg)
         val*=-1;
     return val;
+}
+
+void strcpy(char* dest, const char* src, size_t maxLen)
+{
+    for(int i = 0; i < maxLen; i++)
+    {
+        if(src[i]=='\0')
+            break;
+        dest[i]=src[i];
+    }
 }
 
 size_t strlen(char* s)

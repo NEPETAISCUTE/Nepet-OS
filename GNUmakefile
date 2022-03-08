@@ -3,7 +3,10 @@ all: barebones.iso
 
 .PHONY: run
 run: barebones.iso
-	qemu-system-x86_64 -M q35 -m 2G -cdrom barebones.iso
+	qemu-system-x86_64 -d int -M smm=off -m 2G -cdrom barebones.iso
+
+runnr: barebones.iso
+	qemu-system-x86_64 -d int -M smm=off -m 2G -cdrom barebones.iso -no-reboot
 
 limine:
 	git clone https://github.com/limine-bootloader/limine.git --branch=v2.0-branch-binary --depth=1

@@ -16,7 +16,7 @@ LD := ld
 endif
 
 # User controllable CFLAGS.
-CFLAGS ?= -Wall -Wextra -O0 -pipe -fno-inline-functions
+CFLAGS ?= -Wall -Wextra -O2 -pipe
 
 # User controllable linker flags. We set none by default.
 LDFLAGS ?=

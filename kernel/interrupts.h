@@ -5,7 +5,6 @@
 #include <stddef.h>
 #include <string.h>
 
-void gpf(int errorCode);
-void ISRfunc();
+extern void (*term_write)(const char* string, size_t length);
 
 #endif
