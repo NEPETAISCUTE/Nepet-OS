@@ -4,3 +4,4 @@ kernel/stivale2.h
 *.iso
 *.o
 *.d
+.vscode

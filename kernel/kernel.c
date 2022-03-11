@@ -2,14 +2,13 @@
 #include <stddef.h>
 #include <stivale2.h>
 #include <idt.h>
+#include <mem.h>
+#include <string.h>
+#include <rsdp.h>
 
 // We need to tell the stivale bootloader where we want our stack to be.
 // We are going to allocate our stack as an array in .bss.
 static uint8_t stack[8192];
-
-// stivale2 uses a linked list of tags for both communicating TO the
-// bootloader, or receiving info FROM it. More information about these tags
-// is found in the stivale2 specification.
 
 // stivale2 offers a runtime terminal service which can be ditched at any
 // time, but it provides an easy way to print out to graphical terminal,
@@ -98,6 +97,24 @@ void *stivale2_get_tag(struct stivale2_struct *stivale2_struct, uint64_t id) {
     }
 }
 
+uint64_t getSum(uint8_t* ptr, size_t len)
+{
+    uint8_t sum = 0;
+    for(int i = 0; i < len; i++)
+    {
+        sum+= ptr[i];
+    }
+    return sum;
+}
+
+void OS_TPanic()
+{
+    setColor(RED,BLACK);
+    term_write("an error occured, the OS had to hang\n", 37);
+    for(;;)
+        asm("hlt");
+}
+
 void (*term_write)(const char *string, size_t length);
 // The following will be our kernel's entry point.
 void _start(struct stivale2_struct *stivale2_struct) {
@@ -128,10 +145,26 @@ void _start(struct stivale2_struct *stivale2_struct) {
     set_idt();
     term_write("IDT successfully loaded!\n", 25);
 
-    asm("int $0x20");
-    
-    scrollDown(10);
-    term_write("end!\n",5);
+    initbitmap();
+
+    /*
+    for(;;)
+        asm("hlt");
+    */
+    struct stivale2_struct_tag_rsdp* rsdp_tag = stivale2_get_tag(stivale2_struct, STIVALE2_STRUCT_TAG_RSDP_ID);
+    struct RSDPDescriptor20* rsdp = rsdp_tag->rsdp;
+    if(rsdp==NULL)
+    {
+        term_write("rsdp is null!\n", 14);
+        OS_TPanic();
+    }
+    if((uint8_t)getSum(rsdp, rsdp->Length)!=0)
+    {
+        OS_TPanic();
+    }
+    term_write("found rsdp!!!\n", 14);
+
+
 
     // We're done, just hang...
     for (;;) {

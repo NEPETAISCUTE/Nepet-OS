@@ -11,12 +11,12 @@ int main()
 }
 #endif
 
-void concat(char* s, const char* sadd)
+void concat(char* s, const char* Sadd)
 {
     size_t ssize = strlen(s);
 
-    strcpy(&s[ssize], sadd, strlen(sadd));
-    s[ssize+strlen(sadd)] = '\0';
+    strcpy(&s[ssize], Sadd, strlen(Sadd));
+    s[ssize+strlen(Sadd)] = '\0';
 }
 
 void itohex(char* s, uint64_t num)
@@ -29,7 +29,7 @@ void itohex(char* s, uint64_t num)
         cntLen++;
     }
     if(cntLen==0)
-        cntLen = 1;
+        cntLen++;
 
     for(unsigned int i = 0; i < cntLen; i++)
     {
@@ -55,11 +55,13 @@ void itoa(char* s, int num)
     //get the length of the future string into cntLen
     int temp = num;
     unsigned int cntLen = 0;
-    while(temp>1)
+    while(temp>=1)
     {
         temp /= 10;
         cntLen++;
     }
+    if(cntLen==0)
+        cntLen++;
 
     //proceed to write the text into the string
     for(unsigned int i = 0; i < cntLen; i++)
