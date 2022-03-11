@@ -27,6 +27,7 @@ override INTERNALCFLAGS :=   \
 	-std=gnu11           \
 	-ffreestanding       \
 	-fno-stack-protector \
+	-fno-pie			 \
 	-fno-pic             \
 	-mabi=sysv           \
 	-mno-80387           \

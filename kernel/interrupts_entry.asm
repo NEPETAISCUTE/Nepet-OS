@@ -34,7 +34,7 @@ extern controlProtection ;INT 0x15
 extern hypervisorInjection ;INT 0x1c
 extern VMMCommunication ;INT 0x1d
 extern securityException ;INT 0x1e
-extern ISRfunc ;INT 0x20
+extern kbIRQ ;INT 0x20
 
 extern divByZErr_asm ;INT 0x0
 extern dbg_asm ;INT 0x1
@@ -59,7 +59,7 @@ extern controlProtection_asm ;INT 0x15
 extern hypervisorInjection_asm ;INT 0x1c
 extern VMMCommunication_asm ;INT 0x1d
 extern securityException_asm ;INT 0x1e
-extern ISRfunc_asm ;INT 0x20
+extern kbIRQ_asm ;INT 0x20
 
 divByZErr_asm:
     mov rdi, [rsp]
@@ -177,6 +177,10 @@ securityException_asm:
     call securityException
     iretq
 
-ISRfunc_asm:
-    call ISRfunc
+kbIRQ_asm:
+    push rax
+    call kbIRQ
+    mov al, 0x20
+    out 0x20, al
+    pop rax
     iretq
