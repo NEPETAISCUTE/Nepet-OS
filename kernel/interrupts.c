@@ -22,7 +22,8 @@ void divByZErr(void* InstructionPointer)
 
     printRIP(InstructionPointer);
 
-    asm("hlt");
+    for(;;)
+        asm("hlt");
 }
 
 //INT 0x1
@@ -40,7 +41,8 @@ void NMI()
     term_write("NMI occured!\n", 13);
     term_write("NMI is not supported yet...\n", 28);
 
-    asm("hlt");
+    for(;;)
+        asm("hlt");
 }
 
 //INT 0x3
@@ -65,7 +67,8 @@ void boundRangeExceeded(void* InstructionPointer)
 
     printRIP(InstructionPointer);
 
-    asm("hlt");;
+    for(;;)
+        asm("hlt");
 }
 
 //INT 0x6
@@ -76,7 +79,8 @@ void invalidOPCode(void* InstructionPointer)
 
     printRIP(InstructionPointer);
 
-    asm("hlt");
+    for(;;)
+        asm("hlt");
 }
 
 //INT 0x7
@@ -87,7 +91,8 @@ void deviceNotAvailable(void* InstructionPointer)
 
     printRIP(InstructionPointer);
 
-    asm("hlt");
+    for(;;)
+        asm("hlt");
 }
 
 //INT 0x8
@@ -97,7 +102,8 @@ void doubleFault()
     term_write("Double Fault occured\n", 21);
     term_write("no RIP available since double Fault isn't recoverable\n", 54);
 
-    asm("hlt");
+    for(;;)
+        asm("hlt");
 }
 
 //INT 0xa
@@ -114,7 +120,8 @@ void invalidTSS(void* InstructionPointer, int selectorIndex)
 
     printRIP(InstructionPointer);
 
-    asm("hlt");
+    for(;;)
+        asm("hlt");
 }
 
 //INT 0xb
@@ -131,7 +138,8 @@ void segmentNotPresent(void* InstructionPointer, int segmentSelectorIndex)
 
     printRIP(InstructionPointer);
 
-    asm("hlt");
+    for(;;)
+        asm("hlt");
 }
 
 //INT 0xc
@@ -150,7 +158,8 @@ void stackSegmentFault(void* InstructionPointer, int segmentSelectorIndex)
 
     printRIP(InstructionPointer);
 
-    asm("hlt");
+    for(;;)
+        asm("hlt");
 }
 
 //INT 0xd
@@ -200,7 +209,8 @@ void gpf(void* InstructionPointer, int errorCode)
 
     printRIP(InstructionPointer);
 
-    asm("hlt");
+    for(;;)
+        asm("hlt");
 }
 
 void pageFault(void* InstructionPointer, int errorCode, void* virtualAddress)
@@ -244,7 +254,8 @@ void pageFault(void* InstructionPointer, int errorCode, void* virtualAddress)
     
     printRIP(InstructionPointer);
 
-    asm("hlt");
+    for(;;)
+        asm("hlt");
 }
 
 void x87FloatingPoint(void* InstructionPointer)
@@ -254,7 +265,8 @@ void x87FloatingPoint(void* InstructionPointer)
 
     printRIP(InstructionPointer);
 
-    asm("hlt");
+    for(;;)
+        asm("hlt");
 }
 
 void alignmentCheck(void* InstructionPointer)
@@ -264,7 +276,8 @@ void alignmentCheck(void* InstructionPointer)
 
     printRIP(InstructionPointer);
 
-    asm("hlt");
+    for(;;)
+        asm("hlt");
 }
 
 void machineCheck(void* InstructionPointer)
@@ -274,7 +287,8 @@ void machineCheck(void* InstructionPointer)
 
     printRIP(InstructionPointer);
 
-    asm("hlt");
+    for(;;)
+        asm("hlt");
 }
 
 void SIMDFloatingPoint(void* InstructionPointer)
@@ -284,7 +298,8 @@ void SIMDFloatingPoint(void* InstructionPointer)
 
     printRIP(InstructionPointer);
 
-    asm("hlt");
+    for(;;)
+        asm("hlt");
 }
 
 void virtualizationException(void* InstructionPointer)
@@ -294,7 +309,8 @@ void virtualizationException(void* InstructionPointer)
 
     printRIP(InstructionPointer);
 
-    asm("hlt");
+    for(;;)
+        asm("hlt");
 }
 
 void controlProtection(void* InstructionPointer)
@@ -304,7 +320,8 @@ void controlProtection(void* InstructionPointer)
 
     printRIP(InstructionPointer);
 
-    asm("hlt");
+    for(;;)
+        asm("hlt");
 }
 
 void hypervisorInjection(void* InstructionPointer)
@@ -314,7 +331,8 @@ void hypervisorInjection(void* InstructionPointer)
 
     printRIP(InstructionPointer);
 
-    asm("hlt");
+    for(;;)
+        asm("hlt");
 }
 
 void VMMCommunication(void* InstructionPointer)
@@ -324,7 +342,8 @@ void VMMCommunication(void* InstructionPointer)
 
     printRIP(InstructionPointer);
 
-    asm("hlt");
+    for(;;)
+        asm("hlt");
 }
 
 void securityException(void* InstructionPointer)
@@ -334,11 +353,13 @@ void securityException(void* InstructionPointer)
 
     printRIP(InstructionPointer);
 
-    asm("hlt");
+    for(;;)
+        asm("hlt");
 }
 
-void ISRfunc()
+void kbIRQ()
 {
-    term_write("ISR 0 has access to term_write\n",31);
+    term_write("IRQ 1 triggered because you pressed a button on the keyboard!!!\n",31);
+    asm("in $0x60, %al");
     return;
 }
