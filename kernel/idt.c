@@ -23,7 +23,7 @@ void set_idt()
         deviceNotAvailable_asm, doubleFault_asm, NULL, invalidTSS_asm, segmentNotPresent_asm, stackSegmentFault_asm,
         GeneralProtectionFault_asm, pageFault_asm, NULL, x87FloatingPoint_asm, alignmentCheck_asm, machineCheck_asm,
         SIMDFloatingPoint_asm, virtualizationException_asm, controlProtection_asm, NULL, NULL, NULL, NULL, NULL, NULL, hypervisorInjection_asm, VMMCommunication_asm,
-        securityException_asm, NULL, ISRfunc_asm
+        securityException_asm, NULL, kbIRQ_asm
     };
 
     char iString[17];

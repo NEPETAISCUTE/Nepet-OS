@@ -82,7 +82,7 @@ extern void controlProtection_asm(); //INT 0x15
 extern void hypervisorInjection_asm(); //INT 0x1c
 extern void VMMCommunication_asm(); //INT 0x1d
 extern void securityException_asm(); //INT 0x1e
-extern void ISRfunc_asm(); //INT 0x20
+extern void kbIRQ_asm(); //INT 0x20
 
 void nullifyGate(uint8_t gateOffset);
 void setGate(uint8_t gateOffset, uint8_t attributes, void* codeInterrupt);
