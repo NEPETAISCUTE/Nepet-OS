@@ -145,12 +145,10 @@ void _start(struct stivale2_struct *stivale2_struct) {
     set_idt();
     term_write("IDT successfully loaded!\n", 25);
 
-    initbitmap();
+    
 
-    /*
-    for(;;)
-        asm("hlt");
-    */
+    
+
     struct stivale2_struct_tag_rsdp* rsdp_tag = stivale2_get_tag(stivale2_struct, STIVALE2_STRUCT_TAG_RSDP_ID);
     struct RSDPDescriptor20* rsdp = rsdp_tag->rsdp;
     if(rsdp==NULL)

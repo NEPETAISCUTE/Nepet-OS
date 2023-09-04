@@ -16,7 +16,7 @@ LD := ld
 endif
 
 # User controllable CFLAGS.
-CFLAGS ?= -Wall -Wextra -O2 -pipe
+CFLAGS ?= -Iinclude -Wall -Wextra -O2 -pipe
 
 # User controllable linker flags. We set none by default.
 LDFLAGS ?=
@@ -47,11 +47,14 @@ override INTERNALLDFLAGS :=    \
 	-zmax-page-size=0x1000 \
 	-static
 
+SRC_DIR   := src/
+BUILD_DIR := build/
+
 # Use find to glob all *.c files in the directory and extract the object names.
-override CFILES := $(shell find ./ -type f -name '*.c')
-override ASMFILES := $(shell find ./ -type f -name '*.asm')
-override OBJ := $(CFILES:.c=.o) $(ASMFILES:.asm=.o)
-override HEADER_DEPS := $(CFILES:.c=.d)
+override CFILES      := $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/**/*.c) 
+override ASMFILES    := $(wildcard $(SRC_DIR)/*.asm) $(wildcard $(SRC_DIR)/**/*.asm) 
+override OBJ         := $(CFILES:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o) $(ASMFILES:$(SRC_DIR)/%.asm=$(BUILD_DIR)/%.o)
+override HEADER_DEPS := $(CFILES:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.d)
 
 # Default target.
 .PHONY: all
@@ -66,10 +69,10 @@ $(KERNEL): $(OBJ)
 
 # Compilation rules for *.c files.
 -include $(HEADER_DEPS)
-%.o: %.c stivale2.h
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c stivale2.h
 	$(CC) $(CFLAGS) $(INTERNALCFLAGS) -c $< -o $@ -g
 
-%.o: %.asm
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.asm
 	nasm $< -f elf64 -o $@ -g
 
 # Remove object files and the final executable.
