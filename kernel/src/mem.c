@@ -14,9 +14,9 @@ int checksize(uint32_t bitIndex, uint16_t size)
     uint16_t maxByteIndex = byteIndex + size/8;
     bitIndex = bitIndex%8;
     uint8_t maxBitIndex = bitIndex + size%8;
-    for(byteIndex; byteIndex < maxByteIndex; byteIndex++)
+    for(; byteIndex < maxByteIndex; byteIndex++)
     {
-        for(bitIndex; bitIndex < 8; bitIndex++)
+        for(; bitIndex < 8; bitIndex++)
         {
             if((bitmap[byteIndex])&(0b1<<bitIndex))
             {
@@ -32,7 +32,7 @@ int checksize(uint32_t bitIndex, uint16_t size)
 
 void initbitmap()
 {
-    for(int i = 0; i < sizeof(arena); i++)
+    for(uint64_t i = 0; i < sizeof(arena); i++)
         setbit(&bitmap[i/8], i%8, FREE);
 }
 

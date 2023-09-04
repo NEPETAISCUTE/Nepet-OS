@@ -100,7 +100,7 @@ void *stivale2_get_tag(struct stivale2_struct *stivale2_struct, uint64_t id) {
 uint64_t getSum(uint8_t* ptr, size_t len)
 {
     uint8_t sum = 0;
-    for(int i = 0; i < len; i++)
+    for(uint64_t i = 0; i < len; i++)
     {
         sum+= ptr[i];
     }
@@ -150,13 +150,13 @@ void _start(struct stivale2_struct *stivale2_struct) {
     
 
     struct stivale2_struct_tag_rsdp* rsdp_tag = stivale2_get_tag(stivale2_struct, STIVALE2_STRUCT_TAG_RSDP_ID);
-    struct RSDPDescriptor20* rsdp = rsdp_tag->rsdp;
+    struct RSDPDescriptor20* rsdp = (struct RSDPDescriptor20*)rsdp_tag->rsdp;
     if(rsdp==NULL)
     {
         term_write("rsdp is null!\n", 14);
         OS_TPanic();
     }
-    if((uint8_t)getSum(rsdp, rsdp->Length)!=0)
+    if((uint8_t)getSum((uint8_t*)rsdp, rsdp->Length)!=0)
     {
         OS_TPanic();
     }
